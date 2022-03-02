@@ -13,6 +13,10 @@ class Post extends Model
         'slug',
         'category_id'
     ];
+
+    public function posts() {
+        return $this->hasMany('App\Post');
+    }
     protected function getUniqueSlugFromTitle($title) {
         $slug = Str::slug($title);
         $slug_base = $slug;
