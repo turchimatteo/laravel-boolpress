@@ -18,7 +18,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::all();
+        $posts = Post::paginate(6);
 
         $data = [
             'posts' => $posts
@@ -95,9 +95,13 @@ class PostController extends Controller
     public function edit($id)
     {
         $post = Post::findOrFail($id);
+        $categories = Category::all();
+        $tags = Tag::all();
 
         $data = [
-            'post' => $post
+            'post' => $post,
+            'categories' => $categories,
+            'tags' => $tags
         ];
 
         return view('admin.posts.edit', $data);
@@ -119,6 +123,11 @@ class PostController extends Controller
             $form_data['slug'] = Post::getUniqueSlugFromTitle($form_data['title']);
         }
         $post->update($form_data);
+        if(isset($form_data['tags'])) {
+            $post->tags()->sync($form_data['tags']);
+        } else {
+            $post->tags()->sync([]);
+        }
 
         return redirect()->route('admin.posts.show', ['post' => $post->id]);
     }
@@ -132,6 +141,7 @@ class PostController extends Controller
     public function destroy($id)
     {
         $post = Post::findOrFail($id);
+        $post->tags()->sync([]);
         $post->delete();
 
         return redirect()->route('admin.posts.index');

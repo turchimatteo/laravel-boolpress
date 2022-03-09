@@ -4,7 +4,7 @@
     <section>
         <h2>Crea un nuovo post</h2>
 
-        @if ($errors->any())
+        {{-- @if ($errors->any())
           <div class="alert alert-danger">
             <ul>
               @foreach ($errors->all() as $error)
@@ -12,7 +12,7 @@
               @endforeach
             </ul>
           </div>
-        @endif
+        @endif --}}
 
         <form action="{{ route('admin.post.store') }}" method="post">
             @csrf
@@ -22,6 +22,10 @@
               <label for="title" class="form-label">Title</label>
               <input type="text" class="form-control" id="title" name="title" value="{{ old('title') }}">
             </div>
+
+            @error('title')
+                <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
 
             <div class="mb-3">
               <label for="category_id" class="form-label">Categoria</label>
@@ -33,6 +37,10 @@
               </select>
             </div>
 
+            @error('category_id')
+                <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
+
             <div class="mb-3">
               <h4>Tags</h4>
               @foreach ($tags as $tag)
@@ -43,12 +51,20 @@
                       </label>
                   </div>
               @endforeach
-          </div>
+            </div>
+
+            @error('tags')
+                <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
 
             <div class="mb-3">
                 <label for="content" class="form-label">Content</label>
                 <textarea class="form-control" name="content" id="content" cols="30" rows="10">{{ old('content') }}</textarea>
             </div>
+
+            @error('content')
+                <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
 
             <button type="submit" class="btn btn-primary">Submit</button>
           </form>
