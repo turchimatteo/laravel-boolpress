@@ -1,12 +1,12 @@
 <template>
-    <WorkInProgress />
+    <Posts />
 </template>
 <script>
-import WorkInProgress from '../components/WorkingProgress.vue';
+import Posts from '../components/Posts.vue';
 export default {
     name: 'App',
     components: {
-        WorkInProgress
+        Posts,
     }
 }
 </script>
